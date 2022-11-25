@@ -1,12 +1,16 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import {
-  emailAndPasswordSignIn,
-  signInWithGooglePopup,
-} from "../../utils/firebase/firebase.utils";
-import Button, {BUTTON_TYPE_CLASSES} from "../button/button.component";
+  emailSignInStart,
+  googleSignInStart,
+} from "../../store/user/user.action";
+import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 import FormInput from "../form-input/form-input.components";
-import { SignInFormButtonsContainer, SignInFormContainer, SignInFormHeading } from "./sign-in-form.styles";
-
+import {
+  SignInFormButtonsContainer,
+  SignInFormContainer,
+  SignInFormHeading,
+} from "./sign-in-form.styles";
 
 const defaultformFields = {
   email: "",
@@ -14,10 +18,9 @@ const defaultformFields = {
 };
 
 const SignInForm = () => {
+  const dispatch = useDispatch();
   const [formFields, setFormFields] = useState(defaultformFields);
   const { email, password } = formFields;
-
-
 
   const resetFormFields = () => {
     setFormFields(defaultformFields);
@@ -30,27 +33,18 @@ const SignInForm = () => {
   };
 
   const signInWithGoogle = async () => {
-    await signInWithGooglePopup();
+    dispatch(googleSignInStart());
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await emailAndPasswordSignIn(email, password);
+      dispatch(emailSignInStart(email, password));
 
       resetFormFields();
     } catch (error) {
-      switch (error.code) {
-        case "auth/wrong-password":
-          alert("incorrect password for email");
-          break;
-        case "auth/user-not-found":
-          alert("user does not found");
-          break;
-        default:
-          console.log(error);
-      }
+      console.log(error);
     }
   };
 
@@ -78,7 +72,11 @@ const SignInForm = () => {
         />
         <SignInFormButtonsContainer>
           <Button type="submit">Sign In</Button>
-          <Button type="button" buttonType={BUTTON_TYPE_CLASSES.google} onClick={signInWithGoogle}>
+          <Button
+            type="button"
+            buttonType={BUTTON_TYPE_CLASSES.google}
+            onClick={signInWithGoogle}
+          >
             GOOGLE SIGN IN
           </Button>
         </SignInFormButtonsContainer>
