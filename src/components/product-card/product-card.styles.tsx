@@ -9,24 +9,38 @@ export const ProductCardContainer = styled.div`
   position: relative;
 
   button {
-  width: 80%;
-  opacity: 0.7;
-  position: absolute;
-  top: 255px;
-  display: none;
-}
-
-&:hover {
-  img {
-    opacity: 0.8;
+    width: 80%;
+    opacity: 0.7;
+    position: absolute;
+    top: 255px;
+    display: none;
   }
 
-  button {
-    opacity: 0.85;
-    display: flex;
-  }
-}
+  &:hover {
+    img {
+      opacity: 0.8;
+    }
 
+    button {
+      opacity: 0.85;
+      display: flex;
+    }
+  }
+
+  @media screen and (max-width: 800px) {
+    width: 40vw;
+
+
+    &:hover {
+      img {
+        opacity: unset;
+      }
+
+      button {
+        opacity: unset;
+      }
+    }
+  }
 `;
 
 export const ProductCardImg = styled.img`
@@ -50,4 +64,3 @@ export const ProductCardName = styled.span`
 export const ProductCardPrice = styled.span`
   width: 10%;
 `;
-
